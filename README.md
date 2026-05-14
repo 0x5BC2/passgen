@@ -30,6 +30,9 @@ cd passgen
 
 # Compile
 gcc -o passgen passgen.c
+# Or with warnings, optimized to level 2 and stripped
+gcc -Wall -Wextra -O2 -s -o passgen passgen.c
+
 ```
 
 ### From releases
