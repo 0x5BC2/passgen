@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 
-#define notif(sum, bdy) do { char _cmd[256]; snprintf(_cmd, sizeof(_cmd), "notify-send -t 1000 '%s' '%s'", sum, bdy); system(_cmd); } while (0)
+#define notif(sum, bdy) do { char _cmd[256]; snprintf(_cmd, sizeof(_cmd), "notify-send -t 1000 '%s' '%s'", sum, bdy); int _ret = system(_cmd); (void)_ret; } while (0)
 
 const int MIN_LEN = 1;
 const int MAX_LEN = 64;
@@ -31,9 +31,13 @@ int main(int argc, char *argv[])
     unsigned int seed;
     int urand = open("/dev/urandom", O_RDONLY);
     if(urand < 0 || read(urand, &seed, sizeof(seed)) != sizeof(seed)) 
-    	seed = time(NULL) ^ (getpid() << 16);
+	{
+        seed = time(NULL) ^ (getpid() << 16);
+    }
 	if(urand >= 0) 
-		close(urand);
+	{
+        close(urand);
+    }
     srand(seed);
 
     for(int i=0; i<len; i++)
